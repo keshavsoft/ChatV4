@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.compose.jetchat.feature.chatws.v1.AuthorAndTextMessage
 import com.example.compose.jetchat.feature.chatws.common.ChatMessage
-import com.example.compose.jetchat.feature.chatws.v2.WsMessageType
 
 @Composable
 fun MessageRow(

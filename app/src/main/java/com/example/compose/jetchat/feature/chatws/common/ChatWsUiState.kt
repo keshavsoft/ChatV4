@@ -3,7 +3,7 @@ package com.example.compose.jetchat.feature.chatws.common
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.toMutableStateList
 import com.example.compose.jetchat.R
-import com.example.compose.jetchat.feature.chatws.v2.WsMessageType
+import com.example.compose.jetchat.feature.chatws.forMessages.WsMessageType
 
 class ChatWsUiState(
     val channelName: String,

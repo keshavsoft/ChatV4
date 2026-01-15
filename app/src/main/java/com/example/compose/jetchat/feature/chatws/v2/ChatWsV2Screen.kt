@@ -24,6 +24,7 @@ import com.example.compose.jetchat.conversation.UserInput
 import com.example.compose.jetchat.feature.chatws.common.ChatMessage
 import com.example.compose.jetchat.feature.chatws.common.ChatWsUiState
 import com.example.compose.jetchat.feature.chatws.forMessages.Messages
+import com.example.compose.jetchat.feature.chatws.forMessages.WsMessageType
 import com.example.compose.jetchat.feature.webSocketCode.connectToServer
 import com.example.compose.jetchat.theme.JetchatTheme
 import kotlinx.coroutines.launch
@@ -195,18 +196,3 @@ fun ChatWsV2Screen(onNavIconPressed: () -> Unit) {
 
     ChatWsV2Content(uiState, {}, onNavIconPressed = onNavIconPressed)
 }
-
-enum class WsMessageType {
-    IS_STUDENT,
-    PHONE,
-    UNKNOWN,
-    SYSTEM,
-    STUDENT_CONNECTED
-}
-
-data class WsChatMessage(
-    val author: String,
-    val content: String,
-    val timestamp: String,
-    val type: WsMessageType
-)
