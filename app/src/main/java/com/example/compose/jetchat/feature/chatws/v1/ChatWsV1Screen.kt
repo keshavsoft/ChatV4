@@ -98,13 +98,15 @@ import com.example.compose.jetchat.conversation.UserInput
 import com.example.compose.jetchat.conversation.UserInputOnly
 import com.example.compose.jetchat.conversation.messageFormatter
 import com.example.compose.jetchat.data.chatWsV1InitialMessages
+import com.example.compose.jetchat.feature.chatws.common.ChatMessage
+import com.example.compose.jetchat.feature.chatws.common.ChatWsUiState
 import com.example.compose.jetchat.theme.JetchatTheme
 import kotlinx.coroutines.launch
 
 /**
  * Entry point for a conversation screen.
  *
- * @param uiState [ChatWsUiState] that contains messages to display
+ * @param uiState [com.example.compose.jetchat.feature.chatws.common.ChatWsUiState] that contains messages to display
  * @param navigateToProfile User action when navigation to a profile is requested
  * @param modifier [Modifier] to apply to this layout node
  * @param onNavIconPressed Sends an event up when the user clicks on the menu

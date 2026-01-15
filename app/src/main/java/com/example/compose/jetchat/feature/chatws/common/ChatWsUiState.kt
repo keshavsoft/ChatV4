@@ -1,4 +1,4 @@
-package com.example.compose.jetchat.feature.chatws.v1
+package com.example.compose.jetchat.feature.chatws.common
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.toMutableStateList

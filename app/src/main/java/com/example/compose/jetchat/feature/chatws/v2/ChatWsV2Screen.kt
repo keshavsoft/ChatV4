@@ -20,12 +20,10 @@ import androidx.compose.ui.unit.dp
 import com.example.compose.jetchat.FunctionalityNotAvailablePopup
 import com.example.compose.jetchat.R
 import com.example.compose.jetchat.components.JetchatAppBar
-import com.example.compose.jetchat.conversation.SymbolAnnotationType
 import com.example.compose.jetchat.conversation.UserInput
-import com.example.compose.jetchat.conversation.messageFormatter
-import com.example.compose.jetchat.data.chatWsV2InitialMessages
-import com.example.compose.jetchat.feature.chatws.v1.ChatMessage
-import com.example.compose.jetchat.feature.chatws.v1.ChatWsUiState
+import com.example.compose.jetchat.feature.chatws.common.ChatMessage
+import com.example.compose.jetchat.feature.chatws.common.ChatWsUiState
+import com.example.compose.jetchat.feature.chatws.forMessages.Messages
 import com.example.compose.jetchat.feature.webSocketCode.connectToServer
 import com.example.compose.jetchat.theme.JetchatTheme
 import kotlinx.coroutines.launch

@@ -1,6 +1,6 @@
 package com.example.compose.jetchat.data
 
-import com.example.compose.jetchat.feature.chatws.v1.ChatMessage
+import com.example.compose.jetchat.feature.chatws.common.ChatMessage
 
 val chatWsV1InitialMessages = listOf(
     ChatMessage(

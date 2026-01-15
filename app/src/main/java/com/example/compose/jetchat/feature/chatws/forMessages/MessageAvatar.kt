@@ -1,4 +1,4 @@
-package com.example.compose.jetchat.feature.chatws.v2
+package com.example.compose.jetchat.feature.chatws.forMessages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

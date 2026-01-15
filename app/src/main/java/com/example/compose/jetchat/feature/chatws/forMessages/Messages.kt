@@ -1,4 +1,4 @@
-package com.example.compose.jetchat.feature.chatws.v2
+package com.example.compose.jetchat.feature.chatws.forMessages
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,12 +26,12 @@ fun Messages(
 
         item {
             MessageRow(
-                    msg = msg,
-                    isUserMe = msg.author == me,
-                    isFirstMessageByAuthor = prev != msg.author,
-                    isLastMessageByAuthor = next != msg.author,
-                    onAuthorClick = onAuthorClick
-                )
+                msg = msg,
+                isUserMe = msg.author == me,
+                isFirstMessageByAuthor = prev != msg.author,
+                isLastMessageByAuthor = next != msg.author,
+                onAuthorClick = onAuthorClick
+            )
             }
         }
     }

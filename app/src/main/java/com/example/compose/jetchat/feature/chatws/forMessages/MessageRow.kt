@@ -1,4 +1,4 @@
-package com.example.compose.jetchat.feature.chatws.v2
+package com.example.compose.jetchat.feature.chatws.forMessages
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.compose.jetchat.feature.chatws.v1.AuthorAndTextMessage
 import com.example.compose.jetchat.feature.chatws.common.ChatMessage
+import com.example.compose.jetchat.feature.chatws.v2.WsMessageType
 
 @Composable
 fun MessageRow(
