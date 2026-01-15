@@ -58,7 +58,7 @@ class NavActivity : AppCompatActivity() {
 
                     // Which drawer item is currently selected
                     var selectedDestination by remember {
-                        mutableStateOf<DrawerDestination>(DrawerDestination.Composers)
+                        mutableStateOf<DrawerDestination>(DrawerDestination.ChatWsV2)
                     }
 
                     JetchatDrawer(
@@ -92,7 +92,7 @@ class NavActivity : AppCompatActivity() {
                             selectedDestination = selectedDestination,
                             drawerState = drawerState,
                             scope = scope,
-                            onBackToHome = { selectedDestination = DrawerDestination.Composers }
+                            onBackToHome = { selectedDestination = DrawerDestination.ChatWsV2 }
                         )
                     }
                 }

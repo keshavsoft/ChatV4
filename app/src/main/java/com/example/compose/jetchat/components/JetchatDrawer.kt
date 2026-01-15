@@ -59,57 +59,22 @@ import com.example.compose.jetchat.widget.WidgetReceiver
 fun JetchatDrawerContent(
     onProfileClicked: (String) -> Unit,
     onChatClicked: (String) -> Unit,
-    selectedMenu: String = "composers"
+    selectedMenu: String = "ChatWsV2"
 ) {
-    // Collapsed / expanded state for groups
-    var smsExpanded by rememberSaveable { mutableStateOf(false) }
-    var voiceExpanded by rememberSaveable { mutableStateOf(false) }
-    var chatWsExpanded by rememberSaveable { mutableStateOf(false) }
-
-    LaunchedEffect(selectedMenu) {
-        smsExpanded = selectedMenu.startsWith("sms")
-        voiceExpanded = selectedMenu.startsWith("voice")
-        chatWsExpanded = selectedMenu.startsWith("chatws")
-    }
 
     // Use windowInsetsTopHeight() to add a spacer which pushes the drawer content
     // below the status bar (y-axis)
     Column {
         Spacer(Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
         DrawerHeader()
-        DividerItem()
-
-// ----- ChatWs (collapsible) -----
-        ExpandableHeader(
-            title = "ChatWs",
-            expanded = chatWsExpanded,
-            onClick = { chatWsExpanded = !chatWsExpanded }
-        )
-
-        if (chatWsExpanded) {
-            val chatWsItems = listOf(
-                DrawerDestination.ChatWsV1,
-                DrawerDestination.ChatWsV2
-            )
-
-            chatWsItems.forEach { dest ->
-                ChatWsItem(
-                    text = stringResource(id = dest.labelRes),
-                    selected = selectedMenu == dest.key
-                ) {
-                    onChatClicked(dest.key)
-                }
-            }
-        }
-
 
         // ----- Main chats -----
         DrawerItemHeader("Chats")
 
         val mainChatItems = listOf(
             DrawerDestination.Composers,
-            DrawerDestination.TestByKeshav,
-            DrawerDestination.Droidcon
+            DrawerDestination.ChatWsV1,
+            DrawerDestination.ChatWsV2
         )
 
         mainChatItems.forEach { dest ->
@@ -119,30 +84,6 @@ fun JetchatDrawerContent(
             ) {
                 onChatClicked(dest.key)
             }
-        }
-
-
-        DividerItem(modifier = Modifier.padding(horizontal = 28.dp))
-
-        // ----- Profiles -----
-        DrawerItemHeader("Recent Profiles")
-        ProfileItem(
-            "Ali Conors (you)", meProfile.photo,
-            selectedMenu == meProfile.userId
-        ) {
-            onProfileClicked(meProfile.userId)
-        }
-        ProfileItem(
-            "Taylor Brooks", colleagueProfile.photo,
-            selectedMenu == colleagueProfile.userId
-        ) {
-            onProfileClicked(colleagueProfile.userId)
-        }
-
-        if (widgetAddingIsSupported(LocalContext.current)) {
-            DividerItem(modifier = Modifier.padding(horizontal = 28.dp))
-            DrawerItemHeader("Settings")
-            WidgetDiscoverability()
         }
     }
 }
@@ -174,37 +115,6 @@ private fun DrawerItemHeader(text: String) {
             text,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
-}
-
-@Composable
-private fun ExpandableHeader(
-    title: String,
-    expanded: Boolean,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .heightIn(min = 52.dp)
-            .padding(horizontal = 28.dp)
-            .clickable(onClick = onClick),
-        verticalAlignment = CenterVertically
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.weight(1f)
-        )
-        Icon(
-            imageVector = if (expanded) {
-                Icons.Filled.KeyboardArrowDown
-            } else {
-                Icons.Filled.KeyboardArrowRight
-            },
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
@@ -248,101 +158,6 @@ private fun ChatItem(text: String, selected: Boolean, onChatClicked: () -> Unit)
             modifier = Modifier.padding(start = 12.dp)
         )
     }
-}
-
-
-@Composable
-private fun ChatWsItem(text: String, selected: Boolean, onChatClicked: () -> Unit) {
-    val background = if (selected) {
-        Modifier.background(MaterialTheme.colorScheme.primaryContainer)
-    } else {
-        Modifier
-    }
-    Row(
-        modifier = Modifier
-            .height(56.dp)
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp)
-            .clip(CircleShape)
-            .then(background)
-            .clickable(onClick = onChatClicked),
-        verticalAlignment = CenterVertically
-    ) {
-        val iconTint = if (selected) {
-            MaterialTheme.colorScheme.primary
-        } else {
-            MaterialTheme.colorScheme.onSurfaceVariant
-        }
-        Icon(
-            painter = painterResource(id = R.drawable.ic_jetchat),
-            tint = iconTint,
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp),
-            contentDescription = null
-        )
-        Text(
-            text,
-            style = MaterialTheme.typography.bodyMedium,
-            color = if (selected) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.onSurface
-            },
-            modifier = Modifier.padding(start = 12.dp)
-        )
-    }
-}
-
-
-@Composable
-private fun ProfileItem(
-    text: String,
-    @DrawableRes profilePic: Int?,
-    selected: Boolean = false,
-    onProfileClicked: () -> Unit
-) {
-    val background = if (selected) {
-        Modifier.background(MaterialTheme.colorScheme.primaryContainer)
-    } else {
-        Modifier
-    }
-    Row(
-        modifier = Modifier
-            .height(56.dp)
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp)
-            .clip(CircleShape)
-            .then(background)
-            .clickable(onClick = onProfileClicked),
-        verticalAlignment = CenterVertically
-    ) {
-        val paddingSizeModifier = Modifier
-            .padding(start = 16.dp, top = 16.dp, bottom = 16.dp)
-            .size(24.dp)
-        if (profilePic != null) {
-            Image(
-                painter = painterResource(id = profilePic),
-                modifier = paddingSizeModifier.then(Modifier.clip(CircleShape)),
-                contentScale = ContentScale.Crop,
-                contentDescription = null
-            )
-        } else {
-            Spacer(modifier = paddingSizeModifier)
-        }
-        Text(
-            text,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(start = 12.dp)
-        )
-    }
-}
-
-@Composable
-fun DividerItem(modifier: Modifier = Modifier) {
-    HorizontalDivider(
-        modifier = modifier,
-        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
-    )
 }
 
 @Composable
