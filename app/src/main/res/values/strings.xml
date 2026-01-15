@@ -74,4 +74,6 @@
 
     <string name="menu_ChatWsV1">V1</string>
     <string name="menu_ChatWsV2">V2</string>
+    <string name="menu_ChatWsV3">V3</string>
+    <string name="menu_ChatWsV4">V4</string>
 </resources>

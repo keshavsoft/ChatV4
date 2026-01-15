@@ -22,6 +22,7 @@ import com.example.compose.jetchat.R
 import com.example.compose.jetchat.components.JetchatAppBar
 import com.example.compose.jetchat.conversation.UserInput
 import com.example.compose.jetchat.feature.chatws.common.ChatMessage
+import com.example.compose.jetchat.feature.chatws.common.ChatViewModel
 import com.example.compose.jetchat.feature.chatws.common.ChatWsUiState
 import com.example.compose.jetchat.feature.chatws.forMessages.Messages
 import com.example.compose.jetchat.feature.chatws.forMessages.WsMessageType
@@ -138,7 +139,7 @@ fun ChannelNameBar(
 @Composable
 fun ChannelBarPrev() {
     JetchatTheme {
-        ChannelNameBar("Chat Ws V2", 42)
+        ChannelNameBar("Chat Ws V1", 42)
     }
 }
 
@@ -148,7 +149,7 @@ private val JumpToBottomThreshold = 56.dp
 fun ChatWsV1Screen(onNavIconPressed: () -> Unit) {
     val timeNow = stringResource(R.string.now)
     val uiState = remember {
-        ChatWsUiState("#chat-ws-v2", 42, emptyList())
+        ChatWsUiState("#chat-ws-v1", 42, emptyList())
     }
 
     LaunchedEffect(Unit) {

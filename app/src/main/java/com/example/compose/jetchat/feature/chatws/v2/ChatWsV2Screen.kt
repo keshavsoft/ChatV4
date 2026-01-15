@@ -17,23 +17,23 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.compose.jetchat.FunctionalityNotAvailablePopup
 import com.example.compose.jetchat.R
 import com.example.compose.jetchat.components.JetchatAppBar
 import com.example.compose.jetchat.conversation.UserInput
-import com.example.compose.jetchat.feature.chatws.common.ChatMessage
-import com.example.compose.jetchat.feature.chatws.common.ChatWsUiState
+import com.example.compose.jetchat.feature.chatws.common.*
 import com.example.compose.jetchat.feature.chatws.forMessages.Messages
 import com.example.compose.jetchat.feature.chatws.forMessages.WsMessageType
-import com.example.compose.jetchat.feature.webSocketCode.connectToServer
 import com.example.compose.jetchat.theme.JetchatTheme
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun ChatWsV2Content(
     uiState: ChatWsUiState,
-    navigateToProfile: (String) -> Unit,
+    viewModel: ChatViewModel,
     modifier: Modifier = Modifier,
     onNavIconPressed: () -> Unit = { }
 ) {
@@ -54,14 +54,13 @@ private fun ChatWsV2Content(
                 scrollBehavior = scrollBehavior
             )
         },
-        contentWindowInsets = ScaffoldDefaults.contentWindowInsets
-            .exclude(WindowInsets.navigationBars)
-            .exclude(WindowInsets.ime),
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { padding ->
-        Column(Modifier
-            .fillMaxSize()
-            .padding(padding)) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
 
             Messages(
                 modifier = Modifier.weight(1f),
@@ -73,21 +72,75 @@ private fun ChatWsV2Content(
 
             UserInput(
                 onMessageSent = { text ->
-                    connectToServer.send(text)   // ✅ SEND TO WS
-                    uiState.addMessage(          // optional: echo locally
-                        ChatMessage(authorMe, text, timeNow)
-                    )
+                    viewModel.send(text)
+                    uiState.addMessage(ChatMessage(authorMe, text, timeNow))
                 },
                 resetScroll = {
                     scope.launch { scrollState.scrollToItem(0) }
-                },
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .imePadding()
+                }
             )
-
         }
     }
+}
+
+@Composable
+fun ChatWsV2Screen(onNavIconPressed: () -> Unit) {
+
+    val viewModel: ChatViewModel = viewModel()
+    val timeNow = stringResource(R.string.now)
+
+    val uiState = remember {
+        ChatWsUiState("#chat-ws-v2", 42, emptyList())
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.messages.collect { raw ->
+
+            val isJson = raw.trim().startsWith("{")
+
+            if (!isJson) {
+                uiState.addMessage(
+                    ChatMessage(
+                        author = "Server",
+                        content = raw,
+                        timestamp = timeNow,
+                        messageType = WsMessageType.SYSTEM
+                    )
+                )
+            } else {
+                val json = runCatching { JSONObject(raw) }.getOrNull()
+
+                val type = when (json?.optString("Type")) {
+                    "IsStudent" -> WsMessageType.IS_STUDENT
+                    "Phone" -> WsMessageType.PHONE
+                    else -> WsMessageType.UNKNOWN
+                }
+
+                val text = when (type) {
+                    WsMessageType.IS_STUDENT ->
+                        "Student Connected\n${json?.optString("webSocketId")}"
+                    WsMessageType.PHONE ->
+                        json?.optString("number") ?: raw
+                    else -> raw
+                }
+
+                uiState.addMessage(
+                    ChatMessage(
+                        author = "Server",
+                        content = text,
+                        timestamp = timeNow,
+                        messageType = type
+                    )
+                )
+            }
+        }
+    }
+
+    ChatWsV2Content(
+        uiState = uiState,
+        viewModel = viewModel,
+        onNavIconPressed = onNavIconPressed
+    )
 }
 
 @Composable
@@ -107,92 +160,23 @@ fun ChannelNameBar(
         onNavIconPressed = onNavIconPressed,
         title = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(channelName, style = MaterialTheme.typography.titleMedium)
-                Text(
-                    stringResource(R.string.members, channelMembers),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Text(channelName)
+                Text(stringResource(R.string.members, channelMembers))
             }
         },
         actions = {
-            Icon(
-                Icons.Outlined.Search,
-                contentDescription = null,
-                modifier = Modifier
-                    .clickable { popup = true }
-                    .padding(16.dp)
-            )
-            Icon(
-                Icons.Outlined.Info,
-                contentDescription = null,
-                modifier = Modifier
-                    .clickable { popup = true }
-                    .padding(16.dp)
-            )
+            Icon(Icons.Outlined.Search, null,
+                Modifier.clickable { popup = true }.padding(16.dp))
+            Icon(Icons.Outlined.Info, null,
+                Modifier.clickable { popup = true }.padding(16.dp))
         }
     )
 }
 
 @Preview
 @Composable
-fun ChannelBarPrev() {
+fun PreviewV2() {
     JetchatTheme {
         ChannelNameBar("Chat Ws V2", 42)
     }
-}
-
-private val JumpToBottomThreshold = 56.dp
-
-@Composable
-fun ChatWsV2Screen(onNavIconPressed: () -> Unit) {
-    val timeNow = stringResource(R.string.now)
-    val uiState = remember {
-        ChatWsUiState("#chat-ws-v2", 42, emptyList())
-    }
-
-    LaunchedEffect(Unit) {
-        connectToServer.connect()
-        connectToServer.incomingMessages.collect { raw ->
-            val isJson = raw.trim().startsWith("{") && raw.trim().endsWith("}")
-
-            if (!isJson){
-    uiState.addMessage(
-        ChatMessage(
-            author = "Server",
-            content = raw,
-            timestamp = timeNow,
-            messageType = WsMessageType.SYSTEM
-        )
-    )
-}else{
-            val json = runCatching { org.json.JSONObject(raw) }.getOrNull()
-
-            val type = when (json?.optString("Type")) {
-                "IsStudent" -> WsMessageType.IS_STUDENT
-                "Phone" -> WsMessageType.PHONE
-                else -> WsMessageType.UNKNOWN
-            }
-
-            val text = when (type) {
-                WsMessageType.IS_STUDENT -> "Student Connected\n${json?.optString("webSocketId")}"
-                WsMessageType.PHONE -> json?.optString("number") ?: raw
-                WsMessageType.UNKNOWN -> raw
-                else -> {}
-            }
-
-            uiState.addMessage(
-                ChatMessage(
-                    author = "Server",
-                    content = text as String,
-                    timestamp = timeNow,
-                    messageType = type    // 🔴 ADD THIS FIELD
-                )
-            )
-}
-
-        }
-    }
-
-    ChatWsV2Content(uiState, {}, onNavIconPressed = onNavIconPressed)
 }

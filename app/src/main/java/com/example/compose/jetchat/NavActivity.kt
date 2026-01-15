@@ -22,6 +22,7 @@ import com.example.compose.jetchat.core.navigation.DrawerDestination
 import com.example.compose.jetchat.databinding.ContentMainBinding
 import com.example.compose.jetchat.feature.chatws.v1.ChatWsV1Screen
 import com.example.compose.jetchat.feature.chatws.v2.ChatWsV2Screen
+import com.example.compose.jetchat.feature.chatws.v3.ChatWsV3Screen
 
 
 import kotlinx.coroutines.CoroutineScope
@@ -183,6 +184,14 @@ private fun DrawerDestinationContent(
                 onBackToHome = onBackToHome
             )
         }
+        DrawerDestination.ChatWsV3 -> {
+            ChatWsSection(
+                destination = selectedDestination,
+                drawerState = drawerState,
+                scope = scope,
+                onBackToHome = onBackToHome
+            )
+        }
         else -> {
             // Default: show the original NavHost fragment content
             AndroidViewBinding(ContentMainBinding::inflate)
@@ -214,6 +223,15 @@ private fun ChatWsSection(
         }
         DrawerDestination.ChatWsV2 -> {
             ChatWsV2Screen(
+                onNavIconPressed = {
+                    scope.launch {
+                        drawerState.open()
+                    }
+                }
+            )
+        }
+        DrawerDestination.ChatWsV3 -> {
+            ChatWsV3Screen(
                 onNavIconPressed = {
                     scope.launch {
                         drawerState.open()

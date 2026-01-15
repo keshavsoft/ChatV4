@@ -10,14 +10,16 @@ sealed class DrawerDestination(
 ) {
         data object ChatWsV1 : DrawerDestination("ChatWsV1", R.string.menu_ChatWsV1)
     data object ChatWsV2 : DrawerDestination("ChatWsV2", R.string.menu_ChatWsV2)
+    data object ChatWsV3 : DrawerDestination("ChatWsV3", R.string.menu_ChatWsV3)
 
     // 🔥 Add this block
     companion object {
         fun fromKey(key: String): DrawerDestination = when (key) {
             ChatWsV1.key -> ChatWsV1
             ChatWsV2.key -> ChatWsV2
+            ChatWsV3.key -> ChatWsV3
 
-            else -> ChatWsV2
+            else -> ChatWsV1
         }
     }
 }

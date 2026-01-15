@@ -73,7 +73,8 @@ fun JetchatDrawerContent(
 
         val mainChatItems = listOf(
             DrawerDestination.ChatWsV1,
-            DrawerDestination.ChatWsV2
+            DrawerDestination.ChatWsV2,
+            DrawerDestination.ChatWsV3
         )
 
         mainChatItems.forEach { dest ->
