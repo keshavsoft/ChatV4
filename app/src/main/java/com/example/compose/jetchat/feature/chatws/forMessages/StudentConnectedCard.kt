@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.compose.jetchat.feature.chatws.v1.ChatMessage
+import com.example.compose.jetchat.feature.chatws.common.ChatMessage
 
 @Composable
 fun StudentConnectedCard(msg: ChatMessage) {

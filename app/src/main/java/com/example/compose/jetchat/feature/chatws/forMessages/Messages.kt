@@ -5,7 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.compose.jetchat.feature.chatws.v1.ChatMessage
+import com.example.compose.jetchat.feature.chatws.common.ChatMessage
 
 @Composable
 fun Messages(

@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.compose.jetchat.feature.chatws.v1.ChatMessage
+import com.example.compose.jetchat.feature.chatws.common.ChatMessage
 
 @Composable
 fun SystemMessage(msg: ChatMessage) {
