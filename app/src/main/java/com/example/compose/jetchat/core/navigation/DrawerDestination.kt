@@ -8,18 +8,16 @@ sealed class DrawerDestination(
     @StringRes val labelRes: Int,
     val navId: Int? = null   // ✅ ADD THIS
 ) {
-    data object Composers : DrawerDestination("composers", R.string.menu_composers)
-    data object ChatWsV1 : DrawerDestination("ChatWsV1", R.string.menu_ChatWsV1)
+        data object ChatWsV1 : DrawerDestination("ChatWsV1", R.string.menu_ChatWsV1)
     data object ChatWsV2 : DrawerDestination("ChatWsV2", R.string.menu_ChatWsV2)
 
     // 🔥 Add this block
     companion object {
         fun fromKey(key: String): DrawerDestination = when (key) {
-            Composers.key -> Composers
             ChatWsV1.key -> ChatWsV1
             ChatWsV2.key -> ChatWsV2
 
-            else -> Composers
+            else -> ChatWsV2
         }
     }
 }

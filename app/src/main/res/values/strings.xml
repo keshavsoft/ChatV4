@@ -71,10 +71,6 @@
     <string name="add_widget_to_home_page">Add Widget to Home Page</string>
 
     <!-- res/values/strings.xml -->
-    <string name="menu_composers">composers</string>
-    <string name="menu_testbykeshav">TestbyKeshav</string>
-    <string name="menu_droidcon">droidcon-nyc</string>
-    <string name="menu_gps">Gps</string>
 
     <string name="menu_ChatWsV1">V1</string>
     <string name="menu_ChatWsV2">V2</string>

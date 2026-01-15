@@ -72,7 +72,6 @@ fun JetchatDrawerContent(
         DrawerItemHeader("Chats")
 
         val mainChatItems = listOf(
-            DrawerDestination.Composers,
             DrawerDestination.ChatWsV1,
             DrawerDestination.ChatWsV2
         )
